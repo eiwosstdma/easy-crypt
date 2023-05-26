@@ -19,9 +19,13 @@ export default function () {
     const pathExist = isPathValid(pathToDefaultFolder);
     if (!pathExist) {
       mkdirSync(pathToDefaultFolder);
-      mkdirSync(join(pathToDefaultFolder, 'logs'));
+      mkdirSync(join(pathToDefaultFolder, 'errors'));
       mkdirSync(join(pathToDefaultFolder, 'data'));
     }
+
+    const logExist = isPathValid(join(pathToDefaultFolder, 'logs.txt'));
+    if (!logExist)
+      writeFileSync(join(pathToDefaultFolder, 'logs.txt'), 'LOGS:\n');
 
     const confExist = isPathValid(join(pathToDefaultFolder, 'configuration.json'));
     if (!confExist) {
