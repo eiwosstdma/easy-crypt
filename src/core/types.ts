@@ -27,3 +27,10 @@ export interface Users {
   salt: string;
   pass: string;
 }
+
+export interface CustomErr {
+  created_at: string;
+  zone: string;
+  message: string;
+  content: any;
+}

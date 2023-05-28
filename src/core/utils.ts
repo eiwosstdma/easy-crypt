@@ -3,8 +3,13 @@
  */
 import { homedir } from 'node:os';
 import { join } from 'node:path';
-import { accessSync, readFileSync, appendFileSync } from 'node:fs';
+import { accessSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
+import { parseArgs } from 'node:util';
+
+
 import { guardConfiguration } from './guards';
+import { CustomErr } from './types';
+import { randomBytes } from 'node:crypto';
 
 /**
  *
@@ -53,5 +58,39 @@ export function addLog(content: string, zone: string, path?: string) {
   } catch(e) {
     console.error(e);
     process.exit(1);
+  }
+}
+
+export function args() {
+  const { values } = parseArgs({
+    strict: false,
+    options: {
+      help: {
+        type: 'boolean',
+        short: 'h'
+      }
+    }
+  });
+
+  return values;
+}
+
+export function handleError(err: CustomErr) {
+  const basePath = join(homedir(), 'easy-crypt', 'errors');
+  try {
+    const rand = Math.floor(Math.random() *1000000000000);
+    const fileName = `error_${err.zone}_${rand}.txt`;
+    let str = 'ERROR\n';
+    str += err.created_at;
+    str += '\n';
+    str += err.zone;
+    str += '\nMessage: ';
+    str += err.message;
+    str += '\nContent: ';
+    str += JSON.stringify(err.content);
+
+    writeFileSync(join(basePath, fileName), str);
+  } catch(err) {
+    console.error('An unknown error occurred, cannot generate an error file.\n', err);
   }
 }
