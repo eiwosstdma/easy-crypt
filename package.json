@@ -22,5 +22,8 @@
     "ts-node": "^10.9.1",
     "tsup": "^6.7.0",
     "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "better-sqlite3": "^8.4.0"
   }
 }
