@@ -3,7 +3,7 @@
  */
 import { join } from 'node:path';
 import { homedir } from 'node:os';
-import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import { randomBytes, randomUUID } from 'node:crypto';
 
 import { isPathValid } from './utils';
@@ -59,9 +59,10 @@ export default function (path?: string) {
       create table if not exists users(
           created_at text not null default current_timestamp,
           uuid text not null, 
-          name text not null,
+          name text not null unique,
           salt text not null,
-          pass text not null
+          pass text not null,
+          default int not null default 0
       );
     `.trim());
 
