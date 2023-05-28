@@ -1,4 +1,4 @@
-import { Configuration, EncryptOutput } from './types';
+import { Configuration, Crypt_Value, EncryptOutput, Users } from './types';
 
 export function guardConfiguration(obj: any): obj is Configuration {
   return (
@@ -19,5 +19,33 @@ export function guardEncryptOutput(obj: any): obj is EncryptOutput {
     typeof obj.content === 'string' &&
     typeof obj.iv === 'string' &&
     typeof obj.salt === 'string'
+  );
+}
+
+export function guardCrypt_Value(obj: any): obj is Crypt_Value {
+  return (
+    obj !== null &&
+    obj !== undefined &&
+    obj instanceof Object &&
+    typeof obj.rowid === 'number' &&
+    typeof obj.created_at === 'string' &&
+    typeof obj.label === 'string' &&
+    typeof obj.content === 'string' &&
+    typeof obj.salt === 'string' &&
+    typeof obj.iv === 'string'
+  );
+}
+
+export function guardUsers(obj: any): obj is Users {
+  return (
+    obj !== null &&
+    obj !== undefined &&
+    obj instanceof Object &&
+    typeof obj.rowid === 'number' &&
+    typeof obj.created_at === 'string' &&
+    typeof obj.uuid === 'string' &&
+    typeof obj.name === 'string' &&
+    typeof obj.salt === 'string' &&
+    typeof obj.pass === 'string'
   );
 }
