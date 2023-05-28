@@ -8,12 +8,13 @@ import { randomBytes, randomUUID } from 'node:crypto';
 
 import { isPathValid } from './utils';
 import { Configuration } from './types';
+import { dbConnection } from './db';
 
 /**
  *
  */
-export default function () {
-  const pathToDefaultFolder = join(homedir(), 'easy-crypt');
+export default function (path?: string) {
+  const pathToDefaultFolder = path ?? join(homedir(), 'easy-crypt');
 
   try {
     const pathExist = isPathValid(pathToDefaultFolder);
@@ -38,6 +39,33 @@ export default function () {
       writeFileSync(join(pathToDefaultFolder, 'configuration.json'), JSON.stringify(conf));
     }
 
+    const db = dbConnection(join(pathToDefaultFolder, 'sqlite.db'));
+    /**
+     * Create table for cryptographic values
+     */
+    db.exec(`
+      create table if not exists crypt_val(
+          created_at text not null default current_timestamp,
+          label text not null,
+          content text not null,
+          salt text not null,
+          iv text not null);
+    `.trim());
+
+    /**
+     * Create table for users
+     */
+    db.exec(`
+      create table if not exists users(
+          created_at text not null default current_timestamp,
+          uuid text not null, 
+          name text not null,
+          salt text not null,
+          pass text not null
+      );
+    `.trim());
+
+    db.close();
   } catch (e) {
     console.error(e);
   }
