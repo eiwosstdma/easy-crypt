@@ -10,6 +10,7 @@ import { randomBytes, randomUUID } from 'node:crypto';
 import { guardConfiguration } from './guards';
 import { CustomErr, Users } from './types';
 import { generatePassword } from './crypt';
+import prompt from 'prompt';
 
 /**
  *
@@ -99,11 +100,11 @@ export function handleError(err: CustomErr) {
 
     writeFileSync(join(basePath, fileName), str);
   } catch(err) {
-    console.error('An unknown error occurred, cannot generate an error file.\n', err);
+    console.error('An unknown error occurred, cannot generate a file for the following error.\n', err);
   }
 }
 
-export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 'created_at'> {
+export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 'created_at' | 'default'> {
   const id = randomUUID().toString();
   const salt = randomBytes(16).toString('hex');
   const password = generatePassword(
@@ -118,4 +119,27 @@ export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 
     salt,
     pass: password.toString('hex')
   };
+}
+
+export async function getUserPassword(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    prompt.start();
+    prompt.delimiter = '';
+    prompt.message = 'Insert your ';
+    prompt.get({
+      properties: {
+        password: {
+          type: 'string',
+          required: true,
+          hidden: true
+        }
+      }
+    }, (err, result) => {
+      if (err) reject(err);
+
+      if (typeof result.password === 'string')
+        resolve(result.password as string);
+      else reject('Input is not a password.');
+    });
+  });
 }
