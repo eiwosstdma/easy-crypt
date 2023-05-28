@@ -5,11 +5,11 @@ import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { accessSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
 import { parseArgs } from 'node:util';
-import { randomBytes, randomUUID, pbkdf2Sync } from 'node:crypto';
+import { randomBytes, randomUUID } from 'node:crypto';
 
 import { guardConfiguration } from './guards';
 import { CustomErr, Users } from './types';
-import { message } from 'prompt';
+import { generatePassword } from './crypt';
 
 /**
  *
@@ -103,18 +103,6 @@ export function handleError(err: CustomErr) {
   }
 }
 
-export function generatePassword(pass: string, salt: string, metadata: string, iteration?: number, length?: number): Buffer {
-  const bufferPass = Buffer.from(pass);
-  const bufferSalt = Buffer.from(salt, 'hex');
-  const bufferMetadata = Buffer.from(metadata);
-  return pbkdf2Sync(
-    bufferPass,
-    Buffer.concat([ bufferSalt, bufferMetadata ]),
-    iteration ?? 10000,
-    length ?? 16,
-    'sha512'
-  );
-}
 export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 'created_at'> {
   const id = randomUUID().toString();
   const salt = randomBytes(16).toString('hex');

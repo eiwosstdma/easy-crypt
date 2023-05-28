@@ -5,12 +5,30 @@ import {
   pbkdf2Sync,
   randomBytes,
   createCipheriv,
-  createDecipheriv
+  createDecipheriv,
+  createHash
 } from 'node:crypto';
 
 /**
  *
  */
+export function generateHash(str: string, alg?: string) {
+  return createHash(alg ?? 'sha1').update('str').digest();
+}
+
+export function generatePassword(pass: string, salt: string, metadata: string, iteration?: number, length?: number): Buffer {
+  const bufferPass = generateHash(pass, 'sha256');
+  const bufferSalt = Buffer.from(salt, 'hex');
+  const bufferMetadata = Buffer.from(metadata);
+  return pbkdf2Sync(
+    bufferPass,
+    Buffer.concat([ bufferSalt, bufferMetadata ]),
+    iteration ?? 10000,
+    length ?? 16,
+    'sha512'
+  );
+}
+
 export function generateKey(password: string, salt: string, length: number) {
   return pbkdf2Sync(Buffer.from(password), Buffer.from(salt, 'hex'), 10000, length, 'sha256');
 }
