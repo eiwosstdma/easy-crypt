@@ -26,6 +26,7 @@ export interface Users {
   name: string;
   salt: string;
   pass: string;
+  default: number;
 }
 
 export interface CustomErr {

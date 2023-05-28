@@ -46,6 +46,7 @@ export function guardUsers(obj: any): obj is Users {
     typeof obj.uuid === 'string' &&
     typeof obj.name === 'string' &&
     typeof obj.salt === 'string' &&
-    typeof obj.pass === 'string'
+    typeof obj.pass === 'string' &&
+    typeof obj.default === 'number'
   );
 }
