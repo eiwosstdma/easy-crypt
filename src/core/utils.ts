@@ -86,22 +86,20 @@ export function args() {
 
 export function handleError(err: CustomErr) {
   const basePath = join(homedir(), 'easy-crypt', 'errors');
+
   try {
     const rand = Math.floor(Math.random() *1000000000000);
     const fileName = `error_${err.zone}_${rand}.txt`;
-    let str = 'ERROR\n';
-    str += err.created_at;
-    str += '\n';
-    str += err.zone;
-    str += '\nMessage: ';
-    str += err.message;
-    str += '\nContent: ';
-    str += JSON.stringify(err.content);
+    const filePath = join(basePath, fileName);
+    const str = err.stringifies(filePath);
 
-    writeFileSync(join(basePath, fileName), str);
+    writeFileSync(filePath, str);
+    console.error(err.message);
   } catch(err) {
     console.error('An unknown error occurred, cannot generate a file for the following error.\n', err);
   }
+
+  process.exit(1);
 }
 
 export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 'created_at' | 'default_user'> {

@@ -29,11 +29,13 @@ export interface Users {
   default_user: number;
 }
 
-export interface CustomErr {
+export interface CustomErr extends Error {
   created_at: string;
   zone: string;
   message: string;
   content: any;
+
+  stringifies: (path: string) => string;
 }
 
 export interface ARGS {
