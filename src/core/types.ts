@@ -41,4 +41,5 @@ export interface ARGS {
   help?: boolean;
   use?: string;
   force?: boolean;
+  purge?: boolean;
 }

@@ -77,6 +77,10 @@ export function args() {
       force: {
         type: 'boolean',
         short: 'f'
+      },
+      purge: {
+        type: 'boolean',
+        short: 'p'
       }
     }
   });
