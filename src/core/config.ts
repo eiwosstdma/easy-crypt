@@ -62,7 +62,7 @@ export default function (path?: string) {
           name text not null unique,
           salt text not null,
           pass text not null,
-          default int not null default 0
+          default_user int not null default 0
       );
     `.trim());
 

@@ -104,7 +104,7 @@ export function handleError(err: CustomErr) {
   }
 }
 
-export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 'created_at' | 'default'> {
+export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 'created_at' | 'default_user'> {
   const id = randomUUID().toString();
   const salt = randomBytes(16).toString('hex');
   const password = generatePassword(

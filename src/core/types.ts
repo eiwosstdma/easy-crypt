@@ -26,7 +26,7 @@ export interface Users {
   name: string;
   salt: string;
   pass: string;
-  default: number;
+  default_user: number;
 }
 
 export interface CustomErr {
@@ -34,4 +34,9 @@ export interface CustomErr {
   zone: string;
   message: string;
   content: any;
+}
+
+export interface ARGS {
+  help?: boolean;
+  use?: string;
 }
