@@ -53,10 +53,8 @@ export function guardUsers(obj: any): obj is Users {
 
 export function guardARGS(obj: any): obj is ARGS {
   return (
-    obj !== null &&
-    obj !== undefined &&
-    obj instanceof Object &&
     (typeof obj.help === 'boolean' || obj.help === undefined) &&
-    (typeof obj.help === 'string' || obj.help === undefined)
+    (typeof obj.use === 'string' || obj.use === undefined) &&
+    (typeof obj.force === 'boolean' || obj.force === undefined)
   );
 }

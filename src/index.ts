@@ -17,6 +17,7 @@ import { dbConnection } from './core/db';
 import help from './commands/help';
 import error from './commands/error';
 import use from './commands/use';
+import { guardARGS } from './core/guards';
 
 /**
  *
@@ -27,11 +28,15 @@ import use from './commands/use';
     const configuration = loadConfiguration();
     const db = dbConnection();
     const args = parseARGS();
+    const validArgs = guardARGS(args);
+    if (!validArgs)
+      return console.error('Arguments are not valid.', 'Please, use \'--help\' for more informations.');
+
 
     if (args.help)
-      help();
+      return help();
     if (args.use)
-      use(configuration, db, typeof args.use === 'string' ? args.use : 'root', args.force === false ? false : true);
+      return await use(configuration, db, typeof args.use === 'string' ? args.use : 'root', args.force === false ? false : true);
     else
       error();
 
