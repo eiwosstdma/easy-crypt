@@ -30,8 +30,7 @@ export interface Users {
 }
 
 export interface CustomErr extends Error {
-  created_at: string;
-  zone: string;
+  created_at: Date;
   message: string;
   content: any;
 

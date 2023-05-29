@@ -2,21 +2,29 @@ import { Configuration, CustomErr } from '../core/types';
 import { Database } from 'better-sqlite3';
 import { guardUsers } from '../core/guards';
 import { generateUser, getUserPassword, handleError } from '../core/utils';
+import Error from './error';
+import { CustomError } from '../objs/CustomError';
 
 export default async function(configuration: Configuration, db: Database, name: string, force: boolean) {
   try {
     if (!force) {
-      const user = db.prepare('SELECT * FROM users WHERE name = ?').get(name);
+      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name);
+
+      if (!user)
+        return console.error(`There is no user with the name ${name}.`);
+
       const validUser = guardUsers(user);
 
       if (!validUser)
         console.error(`There is no user with the name ${name}.`);
+      else if (user.default_user !== 0)
+        console.error(`User ${name} is already the default user.`);
       else {
-        db.prepare('UPDATE users SET default = 1 WHERE name = ?').run();
+        db.prepare('UPDATE users SET default_user = 1 WHERE name = ?').run(name);
         console.log(`User ${name} is now the default user.`);
       }
     } else {
-      const user = db.prepare('SELECT * FROM users WHERE name = ?').get(name);
+      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name);
       const validUser = guardUsers(user);
 
       if (validUser)
@@ -39,17 +47,14 @@ export default async function(configuration: Configuration, db: Database, name: 
           console.error('Cannot generate a new user for an unknown reason.\nPlease, check the integrity of the database named "sqlite.db" in the easy-crypt folder.');
       }
     }
+
   } catch(e) {
-    const err: CustomErr = {
-      zone: 'command_use',
-      created_at: new Date().toLocaleString(),
-      message: 'An error occurred in use command',
-      content: JSON.stringify(e)
-    };
 
-    console.error(err.message);
-    handleError(err);
-
-    process.exit(1);
+    handleError(new CustomError(
+      'Error in usage of \'use\' command',
+      'An error occurred while using the use command, more details in the logs at ',
+      (e as Error).stack as string,
+      e
+    ));
   }
 }

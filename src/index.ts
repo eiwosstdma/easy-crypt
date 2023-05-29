@@ -36,7 +36,7 @@ import { guardARGS } from './core/guards';
     if (args.help)
       return help();
     if (args.use)
-      return await use(configuration, db, typeof args.use === 'string' ? args.use : 'root', args.force === false ? false : true);
+      return await use(configuration, db, args.use, args.force ?? false);
     else
       error();
 

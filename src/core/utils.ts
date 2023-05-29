@@ -88,8 +88,14 @@ export function handleError(err: CustomErr) {
   const basePath = join(homedir(), 'easy-crypt', 'errors');
 
   try {
+    const formatedDate = err.created_at
+      .toLocaleString()
+      .replaceAll('/', '-')
+      .replaceAll(' ', '_')
+      .replaceAll(':', '-');
+
     const rand = Math.floor(Math.random() *1000000000000);
-    const fileName = `error_${err.zone}_${rand}.txt`;
+    const fileName = `error_${formatedDate}_${rand}.txt`;
     const filePath = join(basePath, fileName);
     const str = err.stringifies(filePath);
 
