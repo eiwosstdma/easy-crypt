@@ -118,7 +118,6 @@ export function generateUser(name: string, pass: string): Omit<Users, 'rowid' | 
   const password = generatePassword(
     pass,
     salt,
-    id+name,
   );
 
   return {

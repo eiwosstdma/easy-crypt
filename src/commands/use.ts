@@ -1,19 +1,38 @@
-import { Configuration, CustomErr } from '../core/types';
+import { Configuration, CustomErr, Users } from '../core/types';
 import { Database } from 'better-sqlite3';
 import { guardUsers } from '../core/guards';
 import { generateUser, getUserPassword, handleError } from '../core/utils';
-import Error from './error';
 import { CustomError } from '../objs/CustomError';
+import { comparePassword } from '../core/crypt';
 
-export default async function(configuration: Configuration, db: Database, name: string, force: boolean) {
+export default async function(configuration: Configuration, db: Database, name: string, force: boolean, purge: boolean) {
   try {
-    if (!force) {
-      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name);
+    if (purge) {
+      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name) as Users;
+      const validUser = guardUsers(user ?? {});
 
-      if (!user)
-        return console.error(`There is no user with the name ${name}.`);
+      if (!validUser)
+        return console.error(`There is no user with name ${name} to delete.`);
 
-      const validUser = guardUsers(user);
+      const password = await getUserPassword();
+      const comparedPassword = comparePassword(password, user);
+
+      if (comparedPassword) {
+        const res = db.prepare('DELETE FROM users WHERE name = ?').run(name);
+
+        if (res.changes === 0)
+          console.error('An unknown error occurred with the database, please retry.');
+        else
+          console.log(`User with name ${name} has been deleted.`);
+
+      } else
+        return console.error(`Password for user ${name} is not valid.`);
+    }
+
+    if (!force && !purge) {
+      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name) as Users;
+
+      const validUser = guardUsers(user ?? {});
 
       if (!validUser)
         console.error(`There is no user with the name ${name}.`);
@@ -23,8 +42,10 @@ export default async function(configuration: Configuration, db: Database, name: 
         db.prepare('UPDATE users SET default_user = 1 WHERE name = ?').run(name);
         console.log(`User ${name} is now the default user.`);
       }
-    } else {
-      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name);
+    }
+
+    if (force && !purge) {
+      const user = db.prepare('SELECT ROWID, * FROM users WHERE name = ?').get(name) as Users;
       const validUser = guardUsers(user);
 
       if (validUser)

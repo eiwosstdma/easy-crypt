@@ -6,31 +6,36 @@ import {
   randomBytes,
   createCipheriv,
   createDecipheriv,
-  createHash
+  createHash,
+  timingSafeEqual
 } from 'node:crypto';
+import { Users } from './types';
+
 
 /**
  *
  */
-export function generateHash(str: string, alg?: string) {
-  return createHash(alg ?? 'sha1').update('str').digest();
-}
-
-export function generatePassword(pass: string, salt: string, metadata: string, iteration?: number, length?: number): Buffer {
-  const bufferPass = generateHash(pass, 'sha256');
+export function generatePassword(pass: string, salt: string, iteration?: number): Buffer {
+  const bufferPass = createHash('md5').update(pass).digest();
   const bufferSalt = Buffer.from(salt, 'hex');
-  const bufferMetadata = Buffer.from(metadata);
+
   return pbkdf2Sync(
     bufferPass,
-    Buffer.concat([ bufferSalt, bufferMetadata ]),
+    bufferSalt,
     iteration ?? 10000,
     length ?? 16,
     'sha512'
   );
 }
 
+export function comparePassword(password: string, user: Users) {
+  const newPassword = generatePassword(password, user.salt);
+  return timingSafeEqual(newPassword, Buffer.from(user.pass, 'hex'));
+}
+
 export function generateKey(password: string, salt: string, length: number) {
-  return pbkdf2Sync(Buffer.from(password), Buffer.from(salt, 'hex'), 10000, length, 'sha256');
+  const bufferPass = createHash('md5').update(password).digest();
+  return pbkdf2Sync(bufferPass, Buffer.from(salt, 'hex'), 10000, length, 'sha256');
 }
 
 export function encrypt(content: string, password: string, userSalt: string) {

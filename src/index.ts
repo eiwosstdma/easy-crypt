@@ -11,13 +11,14 @@ import { homedir } from 'node:os';
 /**
  *
  */
-import { addLog, args as parseARGS, isPathValid, loadConfiguration } from './core/utils';
+import { addLog, args as parseARGS, generateUser, isPathValid, loadConfiguration } from './core/utils';
 import config from './core/config';
 import { dbConnection } from './core/db';
 import help from './commands/help';
 import error from './commands/error';
 import use from './commands/use';
 import { guardARGS } from './core/guards';
+import { generatePassword } from './core/crypt';
 
 /**
  *
@@ -36,7 +37,7 @@ import { guardARGS } from './core/guards';
     if (args.help)
       return help();
     if (args.use)
-      return await use(configuration, db, args.use, args.force ?? false);
+      return await use(configuration, db, args.use, args.force ?? false, args.purge ?? false);
     else
       error();
 
