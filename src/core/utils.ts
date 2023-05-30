@@ -89,6 +89,14 @@ export function args() {
       salt: {
         type: 'string',
         short: 't'
+      },
+      noclip: {
+        type: 'boolean',
+        short: 'n'
+      },
+      output: {
+        type: 'string',
+        short: 'o'
       }
     }
   });

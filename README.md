@@ -10,12 +10,12 @@
   - Set a crypt value, 
   - if --salt, use the target file as a salt instead of default user
   
-- get string [ --salt<string>, --noclip<boolean>, --clear<boolean>, --output<string>, --purge ]
+- get string [ --salt<string>, --noclip<boolean>, --purge<boolean>, --output<string> ]
   - Get a crypt value, 
   - if --salt, use the target file as a salt instead of default user,
   - if --noclip, send the value to the clipboard (True by default),
   - if --output, send the value to a target file
-  - if --clear, delete the value
+  - if --purge, delete the value
   
 - enc string [ --salt<string>, --copy<boolean>  ]
   - Encrypt a given file(path),

@@ -44,4 +44,6 @@ export interface ARGS {
   purge?: boolean;
   set?: string;
   salt?: string;
+  noclip?: boolean;
+  output?: string;
 }
