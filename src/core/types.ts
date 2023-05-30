@@ -42,4 +42,6 @@ export interface ARGS {
   use?: string;
   force?: boolean;
   purge?: boolean;
+  set?: string;
+  salt?: string;
 }

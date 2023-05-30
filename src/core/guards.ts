@@ -56,6 +56,8 @@ export function guardARGS(obj: any): obj is ARGS {
     (typeof obj.help === 'boolean' || obj.help === undefined) &&
     (typeof obj.use === 'string' || obj.use === undefined) &&
     (typeof obj.force === 'boolean' || obj.force === undefined) &&
-    (typeof obj.purge === 'boolean' || obj.purge === undefined)
+    (typeof obj.purge === 'boolean' || obj.purge === undefined) &&
+    (typeof obj.set === 'string' || obj.set === undefined) &&
+    (typeof obj.salt === 'string' || obj.salt === undefined)
   );
 }

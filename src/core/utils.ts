@@ -81,6 +81,14 @@ export function args() {
       purge: {
         type: 'boolean',
         short: 'p'
+      },
+      set: {
+        type: 'string',
+        short: 's'
+      },
+      salt: {
+        type: 'string',
+        short: 't'
       }
     }
   });
@@ -147,6 +155,33 @@ export async function getUserPassword(): Promise<string> {
       if (typeof result.password === 'string')
         resolve(result.password as string);
       else reject('Input is not a password.');
+    });
+  });
+}
+
+export async function getUserHiddenInput(): Promise<string> {
+  return new Promise((resolve, reject) => {
+    prompt.start();
+    prompt.delimiter = '';
+    prompt.message = 'Insert your hidden ';
+    prompt.get({
+      properties: {
+        input: {
+          type: 'string',
+          required: true,
+          hidden: true,
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          replace: '*'
+        }
+      }
+    }, (err, result) => {
+      if (err) reject(err);
+
+      if (typeof result.input !== 'string')
+        reject('Input is not a string.');
+
+      resolve(result.input as string);
     });
   });
 }

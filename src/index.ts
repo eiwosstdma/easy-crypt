@@ -17,6 +17,7 @@ import { dbConnection } from './core/db';
 import help from './commands/help';
 import error from './commands/error';
 import use from './commands/use';
+import set from './commands/set';
 import { guardARGS } from './core/guards';
 import { generatePassword } from './core/crypt';
 
@@ -38,6 +39,8 @@ import { generatePassword } from './core/crypt';
       return help();
     if (args.use)
       return await use(configuration, db, args.use, args.force ?? false, args.purge ?? false);
+    if (args.set)
+      return await set(configuration, db, args.set, args.salt);
     else
       error();
 
