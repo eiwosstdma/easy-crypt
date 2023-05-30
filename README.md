@@ -1,14 +1,16 @@
 # Easy crypt
 
 ## Commands
-- use string [ --force<boolean> ]
-  - Change the default user, if --force, create a new user.
+- use string [ --force<boolean>, --purge<boolean> ]
+  - Change the default user
+  - if --force, create a new user.
+  - if --purge, delete the given user. (password required)
   
 - set string [ --salt<string> ]
   - Set a crypt value, 
   - if --salt, use the target file as a salt instead of default user
   
-- get string [ --salt<string>, --noclip<boolean>, --clear<boolean>, --output<string> ]
+- get string [ --salt<string>, --noclip<boolean>, --clear<boolean>, --output<string>, --purge ]
   - Get a crypt value, 
   - if --salt, use the target file as a salt instead of default user,
   - if --noclip, send the value to the clipboard (True by default),

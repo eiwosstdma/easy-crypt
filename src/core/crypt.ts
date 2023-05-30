@@ -15,8 +15,8 @@ import { Users } from './types';
 /**
  *
  */
-export function generatePassword(pass: string, salt: string, iteration?: number): Buffer {
-  const bufferPass = createHash('md5').update(pass).digest();
+export function generatePassword(pass: string, salt: string, iteration?: number, length?: number): Buffer {
+  const bufferPass = createHash('sha256').update(pass).digest();
   const bufferSalt = Buffer.from(salt, 'hex');
 
   return pbkdf2Sync(
@@ -24,7 +24,7 @@ export function generatePassword(pass: string, salt: string, iteration?: number)
     bufferSalt,
     iteration ?? 10000,
     length ?? 16,
-    'sha512'
+    'sha256'
   );
 }
 
@@ -34,7 +34,7 @@ export function comparePassword(password: string, user: Users) {
 }
 
 export function generateKey(password: string, salt: string, length: number) {
-  const bufferPass = createHash('md5').update(password).digest();
+  const bufferPass = createHash('sha256').update(password).digest();
   return pbkdf2Sync(bufferPass, Buffer.from(salt, 'hex'), 10000, length, 'sha256');
 }
 
