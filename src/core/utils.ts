@@ -90,6 +90,10 @@ export function args() {
         type: 'string',
         short: 't'
       },
+      get: {
+        type: 'string',
+        short: 'g'
+      },
       noclip: {
         type: 'boolean',
         short: 'n'

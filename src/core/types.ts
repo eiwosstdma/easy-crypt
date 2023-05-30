@@ -46,4 +46,5 @@ export interface ARGS {
   salt?: string;
   noclip?: boolean;
   output?: string;
+  get?: string;
 }

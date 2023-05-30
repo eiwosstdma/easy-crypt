@@ -60,6 +60,7 @@ export function guardARGS(obj: any): obj is ARGS {
     (typeof obj.set === 'string' || obj.set === undefined) &&
     (typeof obj.salt === 'string' || obj.salt === undefined) &&
     (typeof obj.noclip === 'boolean' || obj.noclip === undefined) &&
-    (typeof obj.output === 'string' || obj.output === undefined)
+    (typeof obj.output === 'string' || obj.output === undefined) &&
+    (typeof obj.get === 'string' || obj.get === undefined)
   );
 }
