@@ -36,17 +36,24 @@ import { generatePassword } from './core/crypt';
 
 
     if (args.help)
-      return help();
+      help();
     if (args.use)
-      return await use(configuration, db, args.use, args.force ?? false, args.purge ?? false);
+      await use(configuration, db, args.use, args.force ?? false, args.purge ?? false);
     if (args.set)
-      return await set(configuration, db, args.set, args.salt);
+      await set(configuration, db, args.set, args.salt);
     if (args.get)
-      return await get(configuration, db, args.get, args.noclip ?? false, args.purge ?? false, args.salt, args.output);
+      await get(configuration, db, args.get, args.noclip ?? false, args.purge ?? false, args.salt, args.output);
     else
       error();
 
     db.close();
+
+    /**
+     * Add the log for each used command
+     */
+    const commandAndFlags = Object.getOwnPropertyNames(args);
+    const concated = commandAndFlags.toLocaleString().replaceAll(',', ', ');
+    addLog('Used commands and flags are: ' + (concated.length === 0 ? 'none' : concated));
   } catch(e) {
     console.error(e);
   }

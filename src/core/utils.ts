@@ -45,10 +45,10 @@ export function loadConfiguration(path?: string) {
   }
 }
 
-export function addLog(content: string, zone: string, path?: string) {
+export function addLog(content: string, path?: string) {
   try {
     const moment = new Date().toLocaleString();
-    const str = `\r\n${moment}--- ${zone} ::: "${content}";;;`;
+    const str = `\r\n${moment}  ::: "${content}";;;`;
     const pathToLogFile = path ?? join(homedir(), 'easy-crypt', 'logs.txt');
     const isValid = isPathValid(pathToLogFile);
 
