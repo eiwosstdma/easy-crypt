@@ -37,11 +37,11 @@ import { generatePassword } from './core/crypt';
 
     if (args.help)
       help();
-    if (args.use)
+    else if (args.use)
       await use(configuration, db, args.use, args.force ?? false, args.purge ?? false);
-    if (args.set)
+    else if (args.set)
       await set(configuration, db, args.set, args.salt);
-    if (args.get)
+    else if (args.get)
       await get(configuration, db, args.get, args.noclip ?? false, args.purge ?? false, args.salt, args.output);
     else
       error();
@@ -52,8 +52,9 @@ import { generatePassword } from './core/crypt';
      * Add the log for each used command
      */
     const commandAndFlags = Object.getOwnPropertyNames(args);
-    const concated = commandAndFlags.toLocaleString().replaceAll(',', ', ');
-    addLog('Used commands and flags are: ' + (concated.length === 0 ? 'none' : concated));
+    const concatened = commandAndFlags.toLocaleString().replaceAll(',', ', ');
+    addLog('Used commands and flags are: ' + (concatened.length === 0 ? 'none' : concatened));
+
   } catch(e) {
     console.error(e);
   }
