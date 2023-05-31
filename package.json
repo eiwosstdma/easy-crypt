@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node ./src/index.ts"
+    "dev": "ts-node ./src/index.ts",
+    "bundle:js": "tsup",
+    "bundle:exec": "pkg ./dist/index.js -t node18-win -o ./exec/tc.exe"
   },
   "keywords": [],
   "author": "",
@@ -25,6 +27,7 @@
   },
   "dependencies": {
     "better-sqlite3": "^8.4.0",
+    "pkg": "^5.8.1",
     "prompt": "^1.3.0"
   }
 }
