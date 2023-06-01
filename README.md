@@ -1,5 +1,8 @@
 # Easy crypt
 
+## How to use
+You can install
+
 ## Commands
 - use string [ --force<boolean>, --purge<boolean> ]
   - Change the default user
@@ -16,3 +19,8 @@
   - if --noclip, send the value to the clipboard (True by default),
   - if --output, send the value to a target file
   - if --purge, delete the value
+
+- sync string [ --force<boolean>, --purge<boolean> ]
+  - Sync data of a given table, or all if '*'
+  - if --force, use the given string to set the target
+  - if --purge, 

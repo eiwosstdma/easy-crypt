@@ -1,15 +1,18 @@
 {
   "name": "easy-crypt",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.1.0",
+  "description": "Tiny and lightweight CLI to encrypt some data",
+  "private": false,
   "scripts": {
     "dev": "ts-node ./src/index.ts",
     "bundle:js": "tsup",
     "bundle:exec": "pkg ./dist/index.js -t node18-win -o ./exec/tc.exe -C GZip"
   },
   "keywords": [],
-  "author": "",
+  "engines": {
+    "node": ">=18.15.0"
+  },
+  "author": "github@eiwosstdma",
   "license": "ISC",
   "devDependencies": {
     "@types/better-sqlite3": "^7.6.4",
