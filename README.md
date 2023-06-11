@@ -1,7 +1,5 @@
-# Easy crypt
+# easy-crypt
 
-## How to use
-You can install
 
 ## Commands
 - use string [ --force<boolean>, --purge<boolean> ]

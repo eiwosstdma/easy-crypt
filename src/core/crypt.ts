@@ -7,7 +7,8 @@ import {
   createCipheriv,
   createDecipheriv,
   createHash,
-  timingSafeEqual
+  timingSafeEqual,
+  scryptSync
 } from 'node:crypto';
 import { Users } from './types';
 
@@ -35,7 +36,7 @@ export function comparePassword(password: string, user: Users) {
 
 export function generateKey(password: string, salt: string, length: number) {
   const bufferPass = createHash('sha256').update(password).digest();
-  return pbkdf2Sync(bufferPass, Buffer.from(salt, 'hex'), 10000, length, 'sha256');
+  return scryptSync(bufferPass, Buffer.from(salt, 'hex'), length);
 }
 
 export function encrypt(content: string, password: string, userSalt: string) {
